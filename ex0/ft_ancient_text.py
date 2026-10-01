@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import typing
 
 
 def main() -> None:
@@ -15,10 +14,16 @@ def main() -> None:
     except OSError as e:
         print(f"Error opening file '{sys.argv[1]}': {e}")
         return
-    print("---\n")
-    print(f.read())
-    print("\n---")
-    f.close()
+    try:
+        data = f.read()
+        print("---\n")
+        print(data)
+        print("\n---")
+    except UnicodeDecodeError as e:
+        print(f"Error reading binary file: '{sys.argv[1]}': {e}")
+        return
+    finally:
+        f.close()
     print(f"File '{sys.argv[1]}' closed.")
 
 
