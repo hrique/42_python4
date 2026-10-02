@@ -1,19 +1,31 @@
 #!/usr/bin/env python3
 
 import sys
+import typing
 
 
-def read_data() -> None:
-    ...
+def read_data(f: typing.IO[str]) -> str | None:
+    try:
+        data = f.read()
+    except UnicodeDecodeError as e:
+        print(f"Error reading binary file: '{f.name}': {e}")
+        return None
+    return data
 
 
 def transform() -> None:
     ...
 
 
+def show_data(data: str) -> None:
+    print("---\n")
+    print(data)
+    print("\n---")
+
+
 def main() -> None:
     if len(sys.argv) != 2:
-        print("Usage: ft_ancient_text.py <file>")
+        print("Usage: ft_archive_creation.py <file>")
         return
     print("=== Cyber Archives Recovery & Preservation ===")
     print(f"Accessing file '{sys.argv[1]}'")
@@ -22,19 +34,13 @@ def main() -> None:
     except OSError as e:
         print(f"Error opening file '{sys.argv[1]}': {e}")
         return
-    try:
-        data = f.read()
-        print("---\n")
-        print(data)
-        print("\n---")
-    except UnicodeDecodeError as e:
-        print(f"Error reading binary file: '{sys.argv[1]}': {e}")
+    data = read_data(f)
+    f.close()
+    if data is None:
         return
-    finally:
-        f.close()
+    show_data(data)
     print(f"File '{sys.argv[1]}' closed.\n")
     print("Transform data:")
-    print("---\n")
 
 
 if __name__ == "__main__":
