@@ -13,8 +13,13 @@ def read_data(f: typing.IO[str]) -> str | None:
     return data
 
 
-def transform() -> None:
-    ...
+def transform_data(data: str) -> str:
+    new_data = data.split("\n")
+    for i in new_data:
+        if i != "":
+            i = i + "#"
+    data = "\n".join(new_data)
+    return data 
 
 
 def show_data(data: str) -> None:
@@ -40,7 +45,15 @@ def main() -> None:
         return
     show_data(data)
     print(f"File '{sys.argv[1]}' closed.\n")
+    new_data = transform_data(data)
     print("Transform data:")
+    show_data(new_data)
+    filename = input("Enter new file name (or empty): ")
+    if filename is None:
+        print("Not saving data.")
+        return
+    print(f"Saving data to '{filename}'")
+    filename.write(new_data)
 
 
 if __name__ == "__main__":
