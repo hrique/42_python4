@@ -18,7 +18,7 @@ def main() -> None:
         data = f.read()
         print("---\n")
         print(data)
-        print("\n---")
+        print("---")
     except UnicodeDecodeError as e:
         print(f"Error reading binary file: '{sys.argv[1]}': {e}")
         return
