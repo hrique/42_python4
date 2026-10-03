@@ -1,4 +1,4 @@
-#!/bin/usr/env python3
+#!/usr/bin/env python3
 
 import sys
 
@@ -32,47 +32,52 @@ def transform_data(data: str) -> str:
 
 
 def show_data(data: str) -> None:
-    print("---\n")
-    print(data)
-    print("---")
+    sys.stdout.write("---\n\n")
+    sys.stdout.write(f"{data}\n")
+    sys.stdout.write("---\n")
 
 
 def save_file(filename: str, data: str) -> None:
-    print(f"Saving data to '{filename}'")
+    sys.stdout.write(f"Saving data to '{filename}'\n")
     try:
         new_file = open(filename, "w")
     except OSError as e:
-        print(f"Error opening file '{filename}': {e}")
+        sys.stderr.write(f"[STDERR] Error opening file '{filename}': {e}\n")
         return
     try:
         new_file.write(data)
     except OSError as e:
-        print(f"Error saving file '{filename}': {e}")
+        sys.stderr.write(f"[STDERR] Error saving file '{filename}': {e}\n")
         return
     finally:
         new_file.close()
-    print(f"Data saved in file '{filename}'.")
+    sys.stdout.write(f"Data saved in file '{filename}'.\n")
 
 
 def main() -> None:
     if len(sys.argv) != 2:
-        print("Usage: ft_archive_creation.py <file>")
+        sys.stdout.write("Usage: ft_stream_management.py <file>\n")
         return
-    print("=== Cyber Archives Recovery & Preservation ===")
-    print(f"Accessing file '{sys.argv[1]}'")
+    sys.stdout.write("=== Cyber Archives Recovery & Preservation ===\n")
+    sys.stdout.write(f"Accessing file '{sys.argv[1]}'\n")
     data = read_data(sys.argv[1])
     if data is None:
         return
     show_data(data)
-    print(f"File '{sys.argv[1]}' closed.\n")
-    print("Transform data:")
+    sys.stdout.write(f"File '{sys.argv[1]}' closed.\n\n")
+    sys.stdout.write("Transform data:\n")
     new_data = transform_data(data)
     show_data(new_data)
-    new_file = input("Enter new file name (or empty): ")
+    sys.stdout.write("Enter new file name (or empty): ")
+    sys.stdout.flush()
+    new_file = sys.stdin.readline()
+    new_file = new_file.rstrip()
     if new_file:
         save_file(new_file, new_data)
+    elif new_file is "":
+        sys.stdout.write("Not saving data.\n")
     else:
-        print("Not saving data.")
+        sys.stdout.write("Not saving data.\n")
 
 
 if __name__ == "__main__":
