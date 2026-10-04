@@ -37,21 +37,21 @@ def show_data(data: str) -> None:
     sys.stdout.write("---\n")
 
 
-def save_file(filename: str, data: str) -> None:
+def save_file(filename: str, data: str) -> bool:
     sys.stdout.write(f"Saving data to '{filename}'\n")
     try:
         new_file = open(filename, "w")
     except OSError as e:
         sys.stderr.write(f"[STDERR] Error opening file '{filename}': {e}\n")
-        return
+        return False
     try:
         new_file.write(data)
     except OSError as e:
         sys.stderr.write(f"[STDERR] Error saving file '{filename}': {e}\n")
-        return
+        return False
     finally:
         new_file.close()
-    sys.stdout.write(f"Data saved in file '{filename}'.\n")
+    return True
 
 
 def main() -> None:
@@ -73,8 +73,12 @@ def main() -> None:
     new_file = sys.stdin.readline()
     new_file = new_file.rstrip()
     if new_file:
-        save_file(new_file, new_data)
-    elif new_file is "":
+        status = save_file(new_file, new_data)
+        if status:
+            sys.stdout.write(f"Data saved in file '{new_file}'.\n")
+        else:
+            sys.stdout.write("Data not saved.\n")
+    elif new_file == "":
         sys.stdout.write("Not saving data.\n")
     else:
         sys.stdout.write("Not saving data.\n")
