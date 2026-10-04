@@ -73,13 +73,10 @@ def main() -> None:
     new_file = sys.stdin.readline()
     new_file = new_file.rstrip()
     if new_file:
-        status = save_file(new_file, new_data)
-        if status:
+        if save_file(new_file, new_data):
             sys.stdout.write(f"Data saved in file '{new_file}'.\n")
         else:
             sys.stdout.write("Data not saved.\n")
-    elif new_file == "":
-        sys.stdout.write("Not saving data.\n")
     else:
         sys.stdout.write("Not saving data.\n")
 
